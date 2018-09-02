@@ -1,6 +1,6 @@
 # Based on python2
 
-import httplib
+import http.client
 import time
 from datetime import date, timedelta
 
@@ -8,7 +8,7 @@ from datetime import date, timedelta
 # http://222.236.46.45/nfsdb/COMS/GOCI/1.0/2011/04/01/L1B/COMS_GOCI_L1B_GA_20110401001641.he5.zip
 
 headers = {'User-agent': 'Python'}
-conn = httplib.HTTPConnection('222.236.46.45')
+conn = http.client.HTTPConnection('222.236.46.45')
 
 baseurl = [
 'COMS/GOCI/1.0/',
@@ -26,10 +26,10 @@ level = [
 ]
 
 
-start_date = date(2011,01,01)
+start_date = date(2016,1,1)
 end_date = date(2018,12,31)
 delta = end_date - start_date
-f = open('list.txt', 'w')
+f = open('list_new.txt', 'w')
 
 
 # from sys import argv
@@ -50,14 +50,14 @@ for i in range(0, len(baseurl)): # for each baseurl
         while(j < len(level)): # for each type
             try:
                 directory = '/nfsdb/' + baseurl[i] + date_now.strftime('%Y') + '/' + date_now.strftime('%m') + '/' + date_now.strftime('%d') + '/' + level[j]
-                print 'Parsing ' + directory + '...'
+                print ('Parsing ' + directory + '...')
                 conn.request('GET', directory, '', headers)
                 resp = conn.getresponse()
                 html = resp.read()
                 html_split = html.split('HREF="')
                 for num_file in range(2, len(html_split)):
                     filename = '<' + html_split[num_file].split('.zip')[0] + '.zip' + '>\n'
-                    print filename
+                    print (filename)
                     f.write(filename)
                 j += 1 # move to next index only if parsing had suceeded
             except:
