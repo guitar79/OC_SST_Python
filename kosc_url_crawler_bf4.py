@@ -19,10 +19,15 @@ baseurl = [
 'NOAA/',
 'NPP/',
 ]
+baseurl = [
+'MODISA/',
+'MODIST/',
+]
+
 level = [
-'L1B/',
+#'L1B/',
 'L2/',
-'L3/',
+#'L3/',
 ]
 
 
@@ -48,19 +53,20 @@ for i in range(0, len(baseurl)): # for each baseurl
         date_now = start_date + timedelta(index_day)
         j = 0
         while(j < len(level)): # for each type
-            try:
-                directory = '/nfsdb/' + baseurl[i] + date_now.strftime('%Y') + '/' + date_now.strftime('%m') + '/' + date_now.strftime('%d') + '/' + level[j]
-                print ('Parsing ' + directory + '...')
-                conn.request('GET', directory, '', headers)
-                resp = conn.getresponse()
-                html = resp.read()
-                html_split = html.split('HREF="')
-                for num_file in range(2, len(html_split)):
-                    filename = '<' + html_split[num_file].split('.zip')[0] + '.zip' + '>\n'
-                    print (filename)
-                    f.write(filename)
-                j += 1 # move to next index only if parsing had suceeded
-            except:
-                print('404 Not Found')
+            #try:
+            directory = '/nfsdb/' + baseurl[i] + date_now.strftime('%Y') + '/' + date_now.strftime('%m') + '/' + date_now.strftime('%d') + '/' + level[j]
+            print ('Parsing ' + directory + '...')
+            conn.request('GET', directory, '', headers)
+            resp = conn.getresponse()
+            print ('debug #1')
+            html = resp.read()
+            html_split = html.split('HREF="')
+            for num_file in range(2, len(html_split)):
+                filename = '<' + html_split[num_file].split('.zip')[0] + '.zip' + '>\n'
+                print (filename)
+                f.write(filename)
+            j += 1 # move to next index only if parsing had suceeded
+            #except:
+            print('404 Not Found')
             
         index_day += 1 # move to next index only if parsing had suceeded
