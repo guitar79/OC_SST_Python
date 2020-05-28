@@ -7,26 +7,16 @@ import os
 
 url1 = 'http://222.236.46.45/nfsdb/'
 
-url2s = [
-'MODISA/'
-]
-url2s = [
-'MODIST/'
+url2s = ['MODISA/']
+#url2s = ['MODIST/']
+
+levels = [#'L1B/',
+'L2/' 
+#'L3/'
 ]
 
-levels = [
-#'L1B/',
-'L2/'
-#'L3/',
-]
-
-filename1s = [
-'MYDOCAaqua-1'
-]
-filename1s = [
-'MODOCTterra-1'
-]
-
+filename1s = [ 'MYDOCTaqua-1' ]
+# filename1s = ['MODOCTterra-1']
 
 
 for url2 in url2s :
@@ -38,7 +28,7 @@ for url2 in url2s :
                 os.makedirs(save_dir_name)
                 print ('*'*80)
                 print ('{0} is created.'.format(save_dir_name))
-            for yr in range(2017, 2019) :
+            for yr in range(2019, 2020) :
                 for mo in range(1, 13) : 
                     for da in range(1, 32) : 
                         for hr in range(0, 24) : 
@@ -47,7 +37,7 @@ for url2 in url2s :
                                     format(filename1[:6], yr, mo, da, hr, mi, filename1[6:])
                                
 
-                                if os.path.exists('%s/%s' % (save_dir_name, filename)):
+                                if os.path.exists('%s%s' % (save_dir_name, filename)):
                                     print ('*'*40)
                                     print ('{0} is exist'.format(filename))
                     

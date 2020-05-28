@@ -6,13 +6,15 @@ import os
 
 base_url = 'http://222.236.46.45/nfsdb/'
 
-moids_data_els = [('MODISA/', 'L2/', 'MYDOCT', 'aqua-1'),
-                  ('MODISA/', 'L2/', 'MYDOCSST', 'aqua-1'), # after 2019
+moids_data_els = [('MODISA/', 'L2/', 'MYDOCT', 'aqua-1'),                  
                   ('MODIST/', 'L2/', 'MODOCT', 'terra-1'),
-                ('MODIST/', 'L2/', 'MODOCSST', 'terra-1'), # after 2019
-                ('MODISA/', 'L2/', 'MODOCX', 'aqua-1'),
-                ('MODIST/', 'L2/', 'MODOCX', 'terra-1')
-                ]
+                  ('MODISA/', 'L2/', 'MYDOCX', 'aqua-1'),
+                  ('MODIST/', 'L2/', 'MODOCX', 'terra-1'),
+                  ('MODISA/', 'L2/', 'MYDOCBOX', 'aqua-1'),
+                  ('MODIST/', 'L2/', 'MODOCBOX', 'terra-1'),
+                  ('MODISA/', 'L2/', 'MYDOCSST', 'aqua-1'), # after 2019
+                  ('MODIST/', 'L2/', 'MODOCSST', 'terra-1') # after 2019
+                 ]
 
 for yr in range(2011, 2020) :
     for mo in range(1, 13) : 
