@@ -30,26 +30,31 @@ class crawler():
         filename = '{0}.{1:04d}.{2:02d}{3:02d}.{4:02d}{5:02d}.{6}.hdf.zip'\
                     .format(moids_data_el[2], self.year, self.month, self.day, self.hour, self.minute, moids_data_el[3])
         
-        if os.path.exists('%s%s'.format(save_dir_name, filename)):
-            print ('*'*40)
-            print ('{0} is exist'.format(filename))
-            time.sleep(1)
-        
-        else:	
-            url = '{0}{1}{2:04d}/{3:02d}/{4:02d}/{5}{6}'.\
+        url = '{0}{1}{2:04d}/{3:02d}/{4:02d}/{5}{6}'.\
                     format(base_url, moids_data_el[0], 
                            self.year, self.month, self.day, 
                            moids_data_el[1], filename)
-            print(url)
-            print ('Trying {0}'.format(filename))
+        print(url)
+        print ('Trying {0}'.format(filename))
+            
+        if os.path.exists('%s%s'.format(save_dir_name, filename)):
+            print ('*'*40)
+            print ('{0} is exist'.format(filename))
+            #time.sleep(1)
+        
+        else:	
             
             try : 
                 urllib.urlretrieve(url, '{0}{1}'\
                        .format(save_dir_name, filename))
                 print('#'*60)
+                print('#'*60)
+                print('#'*60)
+                print('#'*60)
+                print('#'*60)
                 print('{0}{1} is downloaded.'\
                       .format(save_dir_name, filename))
-                time.sleep(1)
+                #time.sleep(1)
                             
             except Exception as err : 
                 print('X'*60)
@@ -90,9 +95,9 @@ moids_data_els = [('MODISA/', 'L2/', 'MYDOCT', 'aqua-1'),
                   ('MODIST/', 'L2/', 'MODOCSST', 'terra-1') # after 2019
                   ]
 
-for Yr in range(2019,2020):
+for Yr in range(2011,2020):
     for Mo in range(1,13):
-        for moids_data_el in moids_data_els[6:8] :
+        for moids_data_el in moids_data_els:
             cmonth = crawler_month(Yr, Mo, threadno, moids_data_el)
             cmonth.start()
             threadno += 1
