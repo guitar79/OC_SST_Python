@@ -10,17 +10,19 @@ prefix = 'AWS-01min'
 
 #single thread class
 class crawler():
-    def __init__(self, year, month, day, hour, minute, threadno) :
+    def __init__(self, year, month, day, hour, minute, threadno, moids_data_el) :
         self.year = year
         self.month = month
         self.day = day
         self.hour = hour
         self.minute = minute
         self.threadno = threadno
+        self.moids_data_el = moids_data_el
         
-    def fetch(self, moids_data_el):
+    def fetch(self):
         base_url = 'http://222.236.46.45/nfsdb/'
-        save_dir_name = '../{0}_{1}_{2}/'.format(moids_data_el[1][:-1], moids_data_el[4], moids_data_el[5])
+        save_dir_name = '../{0}_{1}_{2}/'.\
+            format(self.moids_data_el[1][:-1], self.moids_data_el[4], self.moids_data_el[5])
         print(save_dir_name)
         if not os.path.exists(save_dir_name):
             os.makedirs(save_dir_name)
@@ -29,15 +31,17 @@ class crawler():
 		
         if moids_data_el[5] == 'NOAA' :
             filename = '{0}{1:04d}.{2:02d}{3:02d}.{4:02d}{5:02d}.{6}'\
-                    .format(moids_data_el[2], self.year, self.month, self.day, self.hour, self.minute, moids_data_el[3])
+                    .format(moids_data_el[2], self.year, self.month, self.day, \
+                            self.hour, self.minute, self.moids_data_el[3])
         else :                     
             filename = '{0}.{1:04d}.{2:02d}{3:02d}.{4:02d}{5:02d}.{6}'\
-                .format(moids_data_el[2], self.year, self.month, self.day, self.hour, self.minute, moids_data_el[3])
+                .format(self.moids_data_el[2], self.year, self.month, self.day, \
+                        self.hour, self.minute, self.moids_data_el[3])
         
         url = '{0}{1}{2:04d}/{3:02d}/{4:02d}/{5}{6}'.\
-                    format(base_url, moids_data_el[0], 
+                    format(base_url, self.moids_data_el[0], 
                            self.year, self.month, self.day, 
-                           moids_data_el[1], filename)
+                           self.moids_data_el[1], filename)
         print(url)
         print ('Trying {0}'.format(filename))
             
@@ -72,14 +76,15 @@ class crawler_month(threading.Thread):
         self.year = year
         self.month = month
         self.threadno = threadno
-        sys.stderr.write('Thread #{0:d} started...\n'.format(self.threadno))
+        self.moids_data_el = moids_data_el
+        sys.stderr.write('Thread #{0:d} started...\n'.format(self.threadnoself.moids_data_el))
 
     def run(self):
         for Da in range(1, 32):
             for Ho in range(0, 24):
                 for Mn in range(0, 60):                 
-                    fetcher = crawler(self.year, self.month, Da, Ho, Mn, self.threadno)
-                    fetcher.fetch(moids_data_el)
+                    fetcher = crawler(self.year, self.month, Da, Ho, Mn, self.threadno, self.moids_data_el)
+                    fetcher.fetch()
                     sys.stderr.write('Thread #{0:d} - fetched {1:d}-{2:02d}-{3:02d} {4:02d}:{5:02d}...\n'\
                          .format(self.threadno, self.year, self.month, Da, Ho, Mn))
                         
@@ -101,9 +106,9 @@ moids_data_els = [('MODISA/', 'L2/', 'MYDOCT', 'aqua-1.hdf.zip', 'SST', 'MODIS')
                   ('NOAA/', 'L2/', '', 'noaa-18.sst.asc.zip', 'SST', 'NOAA'),
                   ('NOAA/', 'L2/', '', 'noaa-19.sst.asc.zip', 'SST', 'NOAA')]
 
-for Yr in range(2011,2020):
+for Yr in range(2011,2019):
     for Mo in range(1,13):
-        for moids_data_el in moids_data_els[6:7]:
+        for moids_data_el in moids_data_els[0:4]:
             cmonth = crawler_month(Yr, Mo, threadno, moids_data_el)
             cmonth.start()
             threadno += 1
